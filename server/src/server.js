@@ -3,11 +3,21 @@ const app =express()
 import cors from 'cors'
 import userRouter from './routes/user.routes.js'
 import {config} from "dotenv"
+import { connectDb } from './config/db.js'
 config({
     path:'./.env'
 })
-console.log(process.env.PORT)
+
+
 const PORT=process.env.PORT  || 3000
+
+
+connectDb(process.env.MONGO_URI)
+
+app.use(express.json());
+app.use(express.urlencoded({
+    extended:true
+}))
 
 
 
