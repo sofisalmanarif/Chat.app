@@ -1,0 +1,22 @@
+import express from 'express'
+const app =express()
+import cors from 'cors'
+import userRouter from './routes/user.routes.js'
+import {config} from "dotenv"
+config({
+    path:'./.env'
+})
+console.log(process.env.PORT)
+const PORT=process.env.PORT  || 3000
+
+
+
+app.get("/health",(req,res)=>{
+    console.log("i am healthy")
+    res.send("hello world i am healthy ")
+})
+app.use("/api/v1/users",userRouter)
+
+app.listen(PORT,()=>{
+    console.log(`server started on port ${PORT}`)
+})
