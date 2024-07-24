@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { LoginPage } from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
+
+import Chat from './pages/Chat';
 
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
     <BrowserRouter>
     <Routes>
     <Route path="/" element={<LoginPage />}/> 
-    <Route path="/signup" element={  <SignupPage/>}/>
+    <Route path="/chat" element={  <Chat/>}/>
    
     
     </Routes>

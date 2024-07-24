@@ -1,13 +1,29 @@
 import React, { useState } from 'react'
 import { TabList, Tabs,Tab,TabPanel,TabPanels, Stack, FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const navigate = useNavigate()
 
 
-const submitHandler = ()=>{
+const submitHandler =async ()=>{
     console.log(email,password)
+    const config = {
+      headers:{
+          "Content-type":"application/json"
+      }
+  }
+  const {data} = await axios.post("/api/v1/users/login",{email,password},config)
+  
+  console.log(data)
+  if(data){
+    localStorage.setItem("auth-token",data.token)
+    navigate("/chat")
+
+  }
 }
   return (
     <Stack>

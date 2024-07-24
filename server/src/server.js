@@ -21,7 +21,7 @@ app.use(express.urlencoded({
 
 
 
-app.get("/health",(req,res)=>{
+app.get("/api/v1/health",(req,res)=>{
     console.log("i am healthy")
     res.send("hello world i am healthy ")
 })
