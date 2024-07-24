@@ -74,3 +74,21 @@ export const login = async(req,res)=>{
         
     }
 }
+
+export const searchUser =async(req,res)=>{
+    const keyword  =  req.query.search 
+    ? {
+        $or:[
+            {usrName:{ $regex: req.query.search, $options: "i" }},
+            {email:{ $regex: req.query.search, $options: "i" }},
+        ]
+    }
+    :{}
+
+    console.log(keyword)
+   const users = await User.find(keyword).select("-password").find({_id:{$ne :req.user._id}})
+   if(!users) return res.status(404),json({success:false,msg:"user not found"})
+
+    res.status(200).json({success:true,users})
+
+}
