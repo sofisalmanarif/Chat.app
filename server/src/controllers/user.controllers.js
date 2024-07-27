@@ -62,12 +62,13 @@ export const login = async(req,res)=>{
             msg:"invalid Credential"
         })
     }
+    console.log("mathched",matched)
     
     const token = jwt.sign({_id:user._id,},"hdsggjg")
     // console.log(token)
     return res.
         status(201).
-        json({success:true,msg:"login Successfully ",token})
+        json({success:true,msg:"login Successfully ",token,user})
     
 } catch (error) {
         console.log(error)
