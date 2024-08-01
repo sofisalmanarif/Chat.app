@@ -1,5 +1,5 @@
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList, Stack, useDisclosure, Wrap, WrapItem } from '@chakra-ui/react'
-import React from 'react'
+import React, { useState } from 'react'
 import {  DrawerExample } from '../components/Drawer'
 import { ChevronDownIcon, SearchIcon } from '@chakra-ui/icons'
 import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../Redux/Reducers/userReducer'
 import { useNavigate } from 'react-router-dom'
 import { UserModel } from '../components/UserModel'
+import MyChats from '../components/MyChat'
 
 
 const Chat = () => {
@@ -17,6 +18,13 @@ const Chat = () => {
     const user = useSelector((state)=>state.authSlice.user)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const [selectedChat, setSelectedChat] = useState();
+   const [notification, setNotification] = useState([]);
+   const [chats, setChats] = useState([]);
+
+   
+
     // console.log(user)
     console.log("chat",user)
 
@@ -64,7 +72,14 @@ const Chat = () => {
 </Menu>
 </Box>
       </div>
-      <div><DrawerExample isOpen={isOpen} onOpen={onOpen} onClose={onClose} btnRef={btnRef} /></div>
+      <div>
+        <DrawerExample isOpen={isOpen} onOpen={onOpen} onClose={onClose} btnRef={btnRef}  setSelectedChat={setSelectedChat} setChats={setChats}/>
+        </div>
+        <section className='flex w-full h-[90vh]'>
+          
+            <MyChats setSelectedChat={setSelectedChat} setChats={setChats} chats={chats} selectedChat={selectedChat}/>
+        
+        </section>
     </Stack>
   )
 }

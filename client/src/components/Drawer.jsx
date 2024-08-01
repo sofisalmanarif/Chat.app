@@ -1,11 +1,13 @@
 import React from "react"
-import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, Stack, useDisclosure } from "@chakra-ui/react"
+import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, Stack, Toast, useDisclosure } from "@chakra-ui/react"
 import { useState } from "react"
 import axios from "axios"
+import UserListItem from "./UserItemList"
 
 export const  DrawerExample=({ isOpen, onOpen, onClose ,btnRef})=> {
    const [search,setSearch] = useState("")
    const [users, setUsers] = useState([])
+   
   
    const token = localStorage.getItem("auth-token")
    const handleSearch =async()=>{
@@ -25,6 +27,37 @@ export const  DrawerExample=({ isOpen, onOpen, onClose ,btnRef})=> {
         console.log(error.message)
     }
 }
+
+
+const accessChat = async (userId) => {
+  console.log(userId,"access",token);
+
+  try {
+    // setLoadingChat(true);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.post(`/api/v1/chats`, { userId }, config);
+
+    if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+    setSelectedChat(data);
+    setLoadingChat(false);
+    onClose();
+  } catch (error) {
+    Toast({
+      title: "Error fetching the chat",
+      description: error.message,
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "bottom-left",
+    });
+  }
+};
+
     return (
       <>
         
@@ -51,9 +84,7 @@ export const  DrawerExample=({ isOpen, onOpen, onClose ,btnRef})=> {
                 <Stack>
                 {
                     users.map((user)=>( 
-                      <Box key={user._id}>
-                        {user.userName}
-                      </Box>))
+                      <UserListItem user={user} key={user._id} handleFunction={()=>accessChat(user._id)}/>))
                 }
                 </Stack>
                 </Stack>
